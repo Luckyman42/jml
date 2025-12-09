@@ -1,0 +1,15 @@
+[project]
+name = "jml"
+version = "0.1.0"
+description = "JSON <-> YAML converter CLI"
+readme = "README.md"
+requires-python = "==3.13.*"
+dependencies = [
+    "pyyaml>=6.0.3",
+    "rich>=14.2.0",
+    "typer>=0.20.0",
+]
+
+
+[project.scripts]
+jml = "jml:app"

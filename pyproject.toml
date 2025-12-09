@@ -12,6 +12,7 @@ dependencies = [
 
 [dependency-groups]
 dev = [
+    "hatch>=1.16.2",
     "pre-commit>=4.5.0",
     "pyright>=1.1.407",
     "pytest>=9.0.2",
@@ -20,3 +21,12 @@ dev = [
 
 [project.scripts]
 jml = "jml:app"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.version]
+path = "pyproject.toml"
+source = "git"
+

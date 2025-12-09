@@ -1,3 +1,7 @@
+# Build
+build:
+	uv build
+
 # Run linter
 linter:
 	uv run ruff check app

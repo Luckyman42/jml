@@ -25,6 +25,9 @@ lint-all: formatter linter type-checker
 test: 
 	uv run pytest -q
 
+coverage:
+	uv run pytest --cov=jml --cov-report=term-missing
+
 # Install dependencies for developing the project
 install-dev-dependencies:
 	pip install uv

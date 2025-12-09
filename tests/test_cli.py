@@ -90,7 +90,36 @@ def test_cli_invalid_file(tmp_path: Path):
     input_file.write_text('invalid:\ncontent')
 
     result = runner.invoke(app, ["-j", "-i", str(input_file)])
-    assert result.exit_code != 0
+    assert result.exit_code == 1
+
+def test_cli_invalid_stdin():
+    invalid_stdin_data = '---'
+
+    result = runner.invoke(app, ["-j"], input=invalid_stdin_data)
+    assert result.exit_code == 1
+
+def test_cli_both_output_type():
+    stdin_data = 'key: value'
+
+    result = runner.invoke(app, ["-j","-y"], input=stdin_data)
+    assert result.exit_code == 2
+
+def test_cli_no_output_type():
+    stdin_data = 'key: value'
+
+    result = runner.invoke(app, ["-p"], input=stdin_data)
+    assert result.exit_code == 2
+
+def test_invalid_parse(tmp_path: Path, monkeypatch: pytest.MonkeyPatch):
+    input_file = tmp_path / "test.json"
+    input_file.write_text('{"key":"value"}')
+
+    output_file = tmp_path / "out.yaml"
+    monkeypatch.setattr(Path, 'write_text', RuntimeError())
+    
+    result = runner.invoke(app, ["-y", "-i", str(input_file), "-o", str(output_file)])
+    assert result.exit_code == 1
+
 
 
 def test_validate_command_valid(tmp_path: Path):

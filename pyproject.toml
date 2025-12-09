@@ -16,6 +16,7 @@ dev = [
     "pre-commit>=4.5.0",
     "pyright>=1.1.407",
     "pytest>=9.0.2",
+    "pytest-cov>=7.0.0",
     "ruff>=0.14.8",
 ]
 
@@ -30,3 +31,10 @@ build-backend = "hatchling.build"
 path = "pyproject.toml"
 source = "git"
 
+[tool.coverage.report]
+omit = [
+    "jml/__main__.py",
+    "jml/__init__.py"
+]
+show_missing = true
+fail_under = 80

@@ -5,10 +5,12 @@ from pathlib import Path
 from jml.utils import load_file, output_json, output_yaml, try_parse
 
 console = Console()
+"""Console instance for interactions"""
 app = typer.Typer(
     invoke_without_command=True,
     no_args_is_help=True,
 )
+"""Typer application which is the main componenet"""
 
 
 @app.callback(invoke_without_command=True)
@@ -26,7 +28,22 @@ def main(
         None, "-o", "--output", help="Write to file instead of stdout"
     ),
 ):
-    """Process and convert JSON/YAML"""
+    """
+    Main entrypoing for the application which wil call every times even if other subcommand the targets
+    This handling the main logic which is the basic conversions
+
+    Args:
+        ctx (typer.Context): context of the running it contians if there is any other subcomand
+        json_out (bool, optional): If True then the output format is in JSON. Defaults to False.
+        yaml_out (bool, optional): If True then the output format is in YAML. Defaults to False.
+        pretty (bool, optional): Pretty output (JSON only). Defaults to False.
+        input_file (Path, optional): Input file (json/yaml). Defaults to None.
+        output (Path, optional): Write to file instead of stdout. Defaults to None.
+
+    Raises:
+        typer.BadParameter: If you specify both or none of json or yaml output
+        typer.Exit(1): If the parsing are failed
+    """
 
     if ctx.invoked_subcommand:
         return
@@ -72,7 +89,14 @@ def main(
 
 @app.command()
 def validate(input_path: Path):
-    """Check if the file is a valid JSON/YAML."""
+    """Validate a JSON/YAML if it is valid
+
+    Args:
+        input_path (Path): The YAML or JSON path
+
+    Raises:
+        typer.Exit(1): If it can't be parsing
+    """
     try:
         load_file(input_path)
         console.print(f"[green]✓ {input_path} is valid[/]")
